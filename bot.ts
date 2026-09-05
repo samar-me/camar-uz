@@ -223,15 +223,22 @@ bot.action("menu_journey", async (ctx) => {
   const content = readContent();
   const list = content?.journey || [];
 
-  const buttons = list.map((j: any, idx: number) => [
-    Markup.button.callback(`🗑 O'chirish: ${j.year} - ${j.title.substring(0, 18)}...`, `del_jour_${idx}`),
-  ]);
+  const buttons: any[] = [];
+  list.forEach((j: any, idx: number) => {
+    const label = (j.date || j.year) + ": " + j.title.substring(0, 16);
+    buttons.push([
+      Markup.button.callback(`✏️ Tahrirlash: ${label}...`, `edit_jour_${idx}`),
+      Markup.button.callback(`🗑 O'chirish`, `del_jour_${idx}`),
+    ]);
+  });
   buttons.push([Markup.button.callback("➕ Yangi bosqich qo'shish", "add_journey")]);
   buttons.push([Markup.button.callback("⬅️ Bosh menyu", "menu_main")]);
 
-  let msg = `🧭 <b>Sayohat bosqichlari (${list.length} ta):</b>\n\n`;
-  list.forEach((j: any) => {
-    msg += `• <b>${j.year}:</b> ${j.title}\n  ${j.description}\n\n`;
+  let msg = `🧭 <b>Sayohat & Estaliklar (${list.length} ta):</b>\n\n`;
+  list.forEach((j: any, i: number) => {
+    msg += `${i + 1}. <b>${j.date || j.year}:</b> ${j.title}\n   ${j.description}\n`;
+    if (j.media) msg += `   📷 Media: ${j.media}\n`;
+    msg += `\n`;
   });
 
   await ctx.editMessageText(msg, {
@@ -243,6 +250,59 @@ bot.action("menu_journey", async (ctx) => {
 bot.action("add_journey", async (ctx) => {
   sessions[ctx.chat.id] = { step: "jour_year" };
   await ctx.reply("Yilni kiriting (masalan: 2026):");
+});
+
+bot.action(/edit_jour_(\d+)/, async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+  } catch (e) {}
+  const idx = parseInt(ctx.match[1], 10);
+  const content = readContent();
+  const item = content?.journey?.[idx];
+  if (!item) return ctx.reply("Bunday bosqich topilmadi.");
+
+  await ctx.editMessageText(
+    `✏️ <b>Tanlangan estalik:</b>\n\n` +
+      `<b>Sana:</b> ${item.date || item.year}\n` +
+      `<b>Sarlavha:</b> ${item.title}\n` +
+      `<b>Tavsif:</b> ${item.description}\n` +
+      `<b>Rasm/Video:</b> ${item.media || "yo'q"}\n\n` +
+      `Nimani tahrirlamoqchisiz?`,
+    {
+      parse_mode: "HTML",
+      ...Markup.inlineKeyboard([
+        [Markup.button.callback("📅 Sanani o'zgartirish", `edj_date_${idx}`)],
+        [Markup.button.callback("🏷 Sarlavhani o'zgartirish", `edj_title_${idx}`)],
+        [Markup.button.callback("📝 Tavsifni o'zgartirish", `edj_desc_${idx}`)],
+        [Markup.button.callback("📷 Rasm / Video havolasini o'zgartirish", `edj_media_${idx}`)],
+        [Markup.button.callback("⬅️ Ortga", "menu_journey")],
+      ]),
+    }
+  );
+});
+
+bot.action(/edj_date_(\d+)/, async (ctx) => {
+  const idx = parseInt(ctx.match[1], 10);
+  if (ctx.chat) sessions[ctx.chat.id] = { step: `waiting_edj_date_${idx}` };
+  await ctx.reply("Yangi sanani kiriting (masalan: 2024 Oktabr yoki 24.10.2026):");
+});
+
+bot.action(/edj_title_(\d+)/, async (ctx) => {
+  const idx = parseInt(ctx.match[1], 10);
+  if (ctx.chat) sessions[ctx.chat.id] = { step: `waiting_edj_title_${idx}` };
+  await ctx.reply("Yangi sarlavhani kiriting:");
+});
+
+bot.action(/edj_desc_(\d+)/, async (ctx) => {
+  const idx = parseInt(ctx.match[1], 10);
+  if (ctx.chat) sessions[ctx.chat.id] = { step: `waiting_edj_desc_${idx}` };
+  await ctx.reply("Yangi batafsil tavsifni yozing:");
+});
+
+bot.action(/edj_media_(\d+)/, async (ctx) => {
+  const idx = parseInt(ctx.match[1], 10);
+  if (ctx.chat) sessions[ctx.chat.id] = { step: `waiting_edj_media_${idx}` };
+  await ctx.reply("Yangi rasm yoki video havolasini yuboring (yoki «yo'q» deb yozing):");
 });
 
 bot.action(/del_jour_(\d+)/, async (ctx) => {
@@ -443,6 +503,35 @@ bot.on("text", async (ctx) => {
       break;
 
     default:
+      // Check dynamic journey edit steps: waiting_edj_[field]_[idx]
+      if (session.step.startsWith("waiting_edj_")) {
+        const parts = session.step.replace("waiting_edj_", "").split("_");
+        const field = parts[0];
+        const idx = parseInt(parts[1], 10);
+        if (content.journey && content.journey[idx]) {
+          if (field === "date") {
+            content.journey[idx].date = text;
+            content.journey[idx].year = text;
+          } else if (field === "title") {
+            content.journey[idx].title = text;
+          } else if (field === "desc") {
+            content.journey[idx].description = text;
+          } else if (field === "media") {
+            if (text.toLowerCase() === "yo'q") {
+              delete content.journey[idx].media;
+              delete content.journey[idx].mediaType;
+            } else {
+              content.journey[idx].media = text;
+              content.journey[idx].mediaType = text.endsWith(".mp4") || text.includes("video") ? "video" : "image";
+            }
+          }
+          saveContent(content);
+          delete sessions[ctx.chat.id];
+          await ctx.reply("✅ Estalik muvaffaqiyatli tahrirlandi va yangilandi!", getMainMenu());
+          break;
+        }
+      }
+
       delete sessions[ctx.chat.id];
       await ctx.reply("Menyudan kerakli amalni tanlang:", getMainMenu());
       break;
