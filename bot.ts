@@ -34,18 +34,69 @@ function saveContent(data: any) {
   }
 }
 
-function syncToGithub() {
-  exec(
-    'git add data/content.json && git commit -m "chore(cms): update portfolio content via telegram bot" && git push origin main',
-    { cwd: process.cwd() },
-    (error, stdout, stderr) => {
-      if (error) {
-        console.log("Git sync error (might have nothing to commit):", error.message);
-      } else {
-        console.log("Git sync successful:", stdout);
+async function syncToGithub() {
+  const ghToken = process.env.GITHUB_TOKEN;
+  const repo = process.env.GITHUB_REPO || "samar-me/camar-uz";
+
+  // If GITHUB_TOKEN is present, use GitHub REST API directly (works 100% on Render without git cli/ssh)
+  if (ghToken) {
+    try {
+      const fileUrl = `https://api.github.com/repos/${repo}/contents/data/content.json`;
+      const currentRes = await fetch(fileUrl, {
+        headers: {
+          Authorization: `Bearer ${ghToken}`,
+          "User-Agent": "Samar-Portfolio-Bot",
+          Accept: "application/vnd.github.v3+json",
+        },
+      });
+
+      if (!currentRes.ok) {
+        console.error("Failed to fetch file SHA from GitHub:", await currentRes.text());
+        return;
       }
+
+      const currentData: any = await currentRes.json();
+      const sha = currentData.sha;
+      const contentBase64 = Buffer.from(fs.readFileSync(CONTENT_PATH, "utf-8")).toString("base64");
+
+      const updateRes = await fetch(fileUrl, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${ghToken}`,
+          "User-Agent": "Samar-Portfolio-Bot",
+          Accept: "application/vnd.github.v3+json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: "chore(cms): update portfolio content via telegram bot",
+          content: contentBase64,
+          sha: sha,
+          branch: "main",
+        }),
+      });
+
+      if (updateRes.ok) {
+        console.log("✅ Successfully updated content.json on GitHub via API!");
+      } else {
+        console.error("❌ GitHub API update failed:", await updateRes.text());
+      }
+    } catch (err: any) {
+      console.error("GitHub API sync error:", err.message);
     }
-  );
+  } else {
+    // Local fallback: git cli
+    exec(
+      'git add data/content.json && git commit -m "chore(cms): update portfolio content via telegram bot" && git push origin main',
+      { cwd: process.cwd() },
+      (error, stdout) => {
+        if (error) {
+          console.log("Git sync error (local):", error.message);
+        } else {
+          console.log("Git sync successful (local):", stdout);
+        }
+      }
+    );
+  }
 }
 
 // User edit sessions: chat_id -> state
