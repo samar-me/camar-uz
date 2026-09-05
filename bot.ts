@@ -1,6 +1,7 @@
 import { Telegraf, Markup } from "telegraf";
 import * as fs from "fs";
 import * as path from "path";
+import * as http from "http";
 import { exec } from "child_process";
 import dotenv from "dotenv";
 
@@ -427,6 +428,17 @@ bot.on("text", async (ctx) => {
   }
 });
 
+// Health check HTTP server for Render Web Service
+const PORT = process.env.PORT || 3001;
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Samar Portfolio Telegram CMS Bot is alive & running 24/7!\n");
+});
+
+server.listen(PORT, () => {
+  console.log(`📡 Health-check server listening on port ${PORT}`);
+});
+
 // Launch bot
 bot.launch().then(() => {
   console.log("🚀 Telegram CMS Bot ishga tushdi!");
@@ -434,5 +446,11 @@ bot.launch().then(() => {
   console.error("Bot launch error:", err);
 });
 
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
+process.once("SIGINT", () => {
+  server.close();
+  bot.stop("SIGINT");
+});
+process.once("SIGTERM", () => {
+  server.close();
+  bot.stop("SIGTERM");
+});
