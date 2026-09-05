@@ -4,17 +4,20 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "bot": "npx tsx bot.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "framer-motion": "^13.2.0",
     "geist": "^1.7.2",
     "lucide-react": "^1.41.0",
     "next": "16.3.4",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "telegraf": "^4.16.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
