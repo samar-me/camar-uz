@@ -1,3 +1,30 @@
+export const profile = {
+  name: "Samar Baxtiyorov",
+  role: "Frontend Developer",
+  avatar: "/samar.png",
+  bio: "17 yoshda haqiqiy foyda keltiradigan loyihalar va veb-platformalar quraman.",
+  location: "Yakkabog', Qashqadaryo · O'zbekiston",
+  contacts: {
+    telegram: {
+      username: "@camar_me",
+      url: "https://t.me/camar_me",
+    },
+    instagram: {
+      username: "@camar.me",
+      url: "https://instagram.com/camar.me",
+    },
+    email: "camarbakhtiyarov@gmail.com",
+    phone: "+998 20 019 18 09",
+    phoneRaw: "+998200191809",
+  },
+  aboutParagraphs: [
+    "Salom! Men Samar — 17 yoshli dasturchi va IT loyihalar yaratuvchisiman. Hozir asosiy e'tiborimni Frontend Developmentga qaratganman va 11 oylik dasturlash kursida chuqur bilim olmoqdaman.",
+    "HTML, CSS, JavaScriptdan tortib React, Next.js va TypeScriptgacha bo'lgan zamonaviy texnologiyalarni real loyihalar yaratish orqali amaliyotda mustahkamlayman.",
+    "Shu bilan birga, o'quv markazida bolalarga dasturlash asoslarini o'rgataman, turli nufuzli hackathonlarda ishtirok etaman hamda GEN-Z Uzbekistan tarmog'ida volontyor sifatida yoshlar tashabbuslarini qo'llab-quvvatlayman.",
+    "Maqsadim: Frontend → Full-Stack → Cybersecurity. Men o'zini tayyor mutaxassis emas, balki real muammolarga yechim topish va xatolar orqali toblanib borayotgan amaliyotchi dasturchi deb bilaman.",
+  ],
+};
+
 export const projects = [
   {
     id: "teacher-ai",

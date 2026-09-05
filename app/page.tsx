@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Cursor from "@/components/cursor";
 import Image from "next/image";
-import { projects, certificates, journey } from "@/data/projects";
+import { profile, projects, certificates, journey } from "@/data/projects";
 
 // ── MOUSE SPOTLIGHT (Brittany Chiang style) ──────────────────────────────────
 function Spotlight() {
@@ -95,8 +95,8 @@ export default function Home() {
                   className="transition duration-300 hover:border-teal-300 hover:shadow-[0_0_25px_rgba(45,212,191,0.35)]"
                 >
                   <Image
-                    src="/samar.png"
-                    alt="Samar Baxtiyorov"
+                    src={profile.avatar}
+                    alt={profile.name}
                     fill
                     priority
                     sizes="80px"
@@ -115,7 +115,7 @@ export default function Home() {
                 }}
               >
                 <a href="/" style={{ textDecoration: "none", color: "inherit" }}>
-                  Samar Baxtiyorov
+                  {profile.name}
                 </a>
               </h1>
               <h2
@@ -127,7 +127,7 @@ export default function Home() {
                   letterSpacing: "-0.01em",
                 }}
               >
-                Frontend Developer
+                {profile.role}
               </h2>
               <p
                 style={{
@@ -138,7 +138,7 @@ export default function Home() {
                   maxWidth: "300px",
                 }}
               >
-                17 yoshda haqiqiy foyda keltiradigan loyihalar va veb-platformalar quraman.
+                {profile.bio}
               </p>
 
               {/* Navigation Indicator Links */}
@@ -185,17 +185,17 @@ export default function Home() {
               </nav>
             </div>
 
-            {/* Bottom: Brittany Chiang style Social & Contact Icons */}
+            {/* Bottom: Social & Contact Icons */}
             <div style={{ marginTop: "auto", paddingTop: "24px" }}>
               <ul style={{ display: "flex", alignItems: "center", gap: "20px", listStyle: "none" }}>
                 {/* Telegram */}
                 <li>
                   <a
-                    href="https://t.me/camar_me"
+                    href={profile.contacts.telegram.url}
                     target="_blank"
                     rel="noreferrer noopener"
                     aria-label="Telegram"
-                    title="Telegram: @camar_me"
+                    title={`Telegram: ${profile.contacts.telegram.username}`}
                     className="block transition duration-200"
                     style={{ color: "#94a3b8" }}
                     onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#e2e8f0")}
@@ -210,11 +210,11 @@ export default function Home() {
                 {/* Instagram */}
                 <li>
                   <a
-                    href="https://instagram.com/camar.me"
+                    href={profile.contacts.instagram.url}
                     target="_blank"
                     rel="noreferrer noopener"
                     aria-label="Instagram"
-                    title="Instagram: @camar.me"
+                    title={`Instagram: ${profile.contacts.instagram.username}`}
                     className="block transition duration-200"
                     style={{ color: "#94a3b8" }}
                     onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#e2e8f0")}
@@ -229,9 +229,9 @@ export default function Home() {
                 {/* Email */}
                 <li>
                   <a
-                    href="mailto:camarbakhtiyarov@gmail.com"
+                    href={`mailto:${profile.contacts.email}`}
                     aria-label="Email"
-                    title="camarbakhtiyarov@gmail.com"
+                    title={profile.contacts.email}
                     className="block transition duration-200"
                     style={{ color: "#94a3b8" }}
                     onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#e2e8f0")}
@@ -246,9 +246,9 @@ export default function Home() {
                 {/* Phone */}
                 <li>
                   <a
-                    href="tel:+998200191809"
+                    href={`tel:${profile.contacts.phoneRaw}`}
                     aria-label="Telefon"
-                    title="+998 20 019 18 09"
+                    title={profile.contacts.phone}
                     className="block transition duration-200"
                     style={{ color: "#94a3b8" }}
                     onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#e2e8f0")}
@@ -261,7 +261,7 @@ export default function Home() {
                 </li>
               </ul>
               <p style={{ color: "#475569", fontSize: "0.75rem", marginTop: "16px" }}>
-                Yakkabog&apos;, Qashqadaryo · O&apos;zbekiston
+                {profile.location}
               </p>
             </div>
           </header>
@@ -273,32 +273,11 @@ export default function Home() {
             <section id="about" className="section-block" aria-label="Haqimda">
               <SectionHeader label="Haqimda" />
               <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-                <p style={{ fontSize: "1rem", lineHeight: "1.75", color: "#94a3b8" }}>
-                  Salom! Men Samar — 17 yoshli dasturchi va IT loyihalar yaratuvchisiman. Hozir asosiy e&apos;tiborimni{" "}
-                  <span style={{ color: "#e2e8f0", fontWeight: 500 }}>Frontend Development</span>ga qaratganman va 11 oylik dasturlash kursida chuqur bilim olmoqdaman.
-                </p>
-                <p style={{ fontSize: "1rem", lineHeight: "1.75", color: "#94a3b8" }}>
-                  HTML, CSS, JavaScriptdan tortib{" "}
-                  <span style={{ color: "#e2e8f0", fontWeight: 500 }}>React, Next.js va TypeScript</span>gacha bo&apos;lgan zamonaviy texnologiyalarni real loyihalar yaratish orqali amaliyotda mustahkamlayman.
-                </p>
-                <p style={{ fontSize: "1rem", lineHeight: "1.75", color: "#94a3b8" }}>
-                  Shu bilan birga, o&apos;quv markazida bolalarga dasturlash asoslarini o&apos;rgataman, turli nufuzli hackathonlarda ishtirok etaman hamda{" "}
-                  <a
-                    href="https://t.me/camar_me"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    style={{ color: "#5eead4", textDecoration: "none", fontWeight: 500 }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "underline")}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "none")}
-                  >
-                    GEN-Z Uzbekistan
-                  </a>{" "}
-                  tarmog&apos;ida volontyor sifatida yoshlar tashabbuslarini qo&apos;llab-quvvatlayman.
-                </p>
-                <p style={{ fontSize: "1rem", lineHeight: "1.75", color: "#94a3b8" }}>
-                  Maqsadim:{" "}
-                  <span style={{ color: "#e2e8f0", fontWeight: 500 }}>Frontend → Full-Stack → Cybersecurity</span>. Men o&apos;zini tayyor mutaxassis emas, balki real muammolarga yechim topish va xatolar orqali toblanib borayotgan amaliyotchi dasturchi deb bilaman.
-                </p>
+                {profile.aboutParagraphs.map((paragraph, idx) => (
+                  <p key={idx} style={{ fontSize: "1rem", lineHeight: "1.75", color: "#94a3b8" }}>
+                    {paragraph}
+                  </p>
+                ))}
               </div>
             </section>
 
@@ -313,7 +292,7 @@ export default function Home() {
                       {/* Hover Highlight Box */}
                       <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg" />
 
-                      {/* Project Preview Image (Brittany style left thumbnail) */}
+                      {/* Project Preview Image */}
                       <div className="z-10 sm:order-1 sm:col-span-2 sm:translate-y-1">
                         <div
                           className="relative aspect-video w-full rounded border-2 border-slate-200/10 transition group-hover:border-slate-200/30 overflow-hidden bg-slate-900 shadow-md"
@@ -393,7 +372,7 @@ export default function Home() {
                       {/* Hover Highlight Box */}
                       <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg" />
 
-                      {/* Left: Date & Badge Icon */}
+                      {/* Left: Date & Location */}
                       <div className="z-10 sm:col-span-2">
                         <p style={{ color: "#64748b", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", paddingTop: "2px" }}>
                           {cert.date}
@@ -512,7 +491,7 @@ export default function Home() {
   );
 }
 
-// ── SECTION HEADER (Always visible with clear separation) ───────────────────
+// ── SECTION HEADER ───────────────────────────────────────────────────────────
 function SectionHeader({ label }: { label: string }) {
   return (
     <div className="section-header-wrap">
