@@ -23,6 +23,31 @@ export const projects = [
   },
 ];
 
+export const certificates = [
+  {
+    id: "ai-hackathon-qarshi",
+    title: "Certificate of Appreciation — National AI Hackathon",
+    issuer: "Digital.uz, IT Park, Yoshlar Ishlari Agentligi, AICA, UZINFOCOM",
+    date: "15 — 18 Avgust, 2026",
+    location: "Qarshi, O'zbekiston",
+    description:
+      "Qarshi shahrida bo'lib o'tgan Milliy Sun'iy Intellekt Hakatonida (National AI Hackathon) innovatsiya, kreativlik va texnologik taraqqiyotga qo'shgan munosib hissasi uchun taqdirlandi.",
+    fileUrl: "/hackathon-certificate.pdf",
+    tags: ["AI Hackathon", "Innovatsiya", "IT Park", "AI / Tech"],
+  },
+  {
+    id: "tashabbus-35000",
+    title: "«35 000 tashabbus» Milliy Sertifikati",
+    issuer: "O'zbekiston Respublikasi Oliy Ta'lim, Fan va Innovatsiyalar Vazirligi",
+    date: "02.08.2026",
+    location: "O'zbekiston",
+    description:
+      "Mustaqillikning 35 yilligiga bag'ishlangan «35 000 tashabbus» milliy platformasi orqali taqdim etilgan «Bir Joy — butun tumanni birlashtiradi» tashabbusi uchun (TSH-2026-000523).",
+    fileUrl: "/tashabbus-certificate.pdf",
+    tags: ["Davlat Mukofoti", "Bir Joy", "Vazirlik", "Yoshlar Tashabbusi"],
+  },
+];
+
 export const journey = [
   {
     year: "2024",
@@ -40,8 +65,8 @@ export const journey = [
     description: "EduFund ta'lim moliyalashtirish loyihasi bilan hackathonda muvaffaqiyatli ishtirok etdim.",
   },
   {
-    year: "2025 — Hozir",
-    title: "RestoranCha Pro & Teacher AI (SaaS)",
-    description: "Real sektor uchun RestoranCha Pro avtomatlashtirish platformasi va Teacher AI ni to'liq SaaS biznes modeliga o'tkazish.",
+    year: "2026 — Hozir",
+    title: "Milliy AI Hackathon & «Bir Joy» Davlat Tashabbusi",
+    description: "Qarshi shahridagi National AI Hackathon ishtirokchisi hamda Oliy Ta'lim, Fan va Innovatsiyalar Vazirligining «35 000 tashabbus» platformasi sertifikati sohibi.",
   },
 ];
