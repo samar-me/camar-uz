@@ -72,21 +72,24 @@ bot.start(async (ctx) => {
 
 // ── PROFILE MENU ─────────────────────────────────────────────────────────────
 bot.action("menu_profile", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+  } catch (e) {}
   const content = readContent();
   const p = content?.profile || {};
   await ctx.editMessageText(
-    `👤 *Profil ma'lumotlari:*\n\n` +
-      `*Ism:* ${p.name}\n` +
-      `*Kasb:* ${p.role}\n` +
-      `*Bio:* ${p.bio}\n` +
-      `*Manzil:* ${p.location}\n` +
-      `*Telegram:* ${p.contacts?.telegram?.username}\n` +
-      `*Instagram:* ${p.contacts?.instagram?.username}\n` +
-      `*Email:* ${p.contacts?.email}\n` +
-      `*Telefon:* ${p.contacts?.phone}\n\n` +
+    `👤 <b>Profil ma'lumotlari:</b>\n\n` +
+      `<b>Ism:</b> ${p.name || ""}\n` +
+      `<b>Kasb:</b> ${p.role || ""}\n` +
+      `<b>Bio:</b> ${p.bio || ""}\n` +
+      `<b>Manzil:</b> ${p.location || ""}\n` +
+      `<b>Telegram:</b> ${p.contacts?.telegram?.username || ""}\n` +
+      `<b>Instagram:</b> ${p.contacts?.instagram?.username || ""}\n` +
+      `<b>Email:</b> ${p.contacts?.email || ""}\n` +
+      `<b>Telefon:</b> ${p.contacts?.phone || ""}\n\n` +
       `Nimani o'zgartirmoqchisiz?`,
     {
-      parse_mode: "Markdown",
+      parse_mode: "HTML",
       ...Markup.inlineKeyboard([
         [Markup.button.callback("✏️ Ismni o'zgartirish", "edit_name")],
         [Markup.button.callback("✏️ Kasbni o'zgartirish", "edit_role")],
@@ -133,6 +136,9 @@ bot.action("edit_about", async (ctx) => {
 
 // ── PROJECTS MENU ────────────────────────────────────────────────────────────
 bot.action("menu_projects", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+  } catch (e) {}
   const content = readContent();
   const list = content?.projects || [];
 
@@ -142,19 +148,19 @@ bot.action("menu_projects", async (ctx) => {
   buttons.push([Markup.button.callback("➕ Yangi loyiha qo'shish", "add_project")]);
   buttons.push([Markup.button.callback("⬅️ Bosh menyu", "menu_main")]);
 
-  let msg = `🚀 *Loyihalar ro'yxati (${list.length} ta):*\n\n`;
+  let msg = `🚀 <b>Loyihalar ro'yxati (${list.length} ta):</b>\n\n`;
   list.forEach((p: any, i: number) => {
-    msg += `${i + 1}. *${p.title}* (${p.subtitle})\n   Status: ${p.status}\n   Havola: ${p.link || "yo'q"}\n\n`;
+    msg += `${i + 1}. <b>${p.title}</b> (${p.subtitle})\n   Status: ${p.status}\n   Havola: ${p.link || "yo'q"}\n\n`;
   });
 
   await ctx.editMessageText(msg, {
-    parse_mode: "Markdown",
+    parse_mode: "HTML",
     ...Markup.inlineKeyboard(buttons),
   });
 });
 
 bot.action("add_project", async (ctx) => {
-  sessions[ctx.chat.id] = { step: "proj_title" };
+  if (ctx.chat) sessions[ctx.chat.id] = { step: "proj_title" };
   await ctx.reply(
     "Yangi loyiha sarlavhasini kiriting (masalan: SavdoAI):"
   );
@@ -172,6 +178,9 @@ bot.action(/del_proj_(.+)/, async (ctx) => {
 
 // ── CERTIFICATES MENU ────────────────────────────────────────────────────────
 bot.action("menu_certs", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+  } catch (e) {}
   const content = readContent();
   const list = content?.certificates || [];
 
@@ -181,19 +190,19 @@ bot.action("menu_certs", async (ctx) => {
   buttons.push([Markup.button.callback("➕ Yangi sertifikat qo'shish", "add_cert")]);
   buttons.push([Markup.button.callback("⬅️ Bosh menyu", "menu_main")]);
 
-  let msg = `📜 *Sertifikatlar ro'yxati (${list.length} ta):*\n\n`;
+  let msg = `📜 <b>Sertifikatlar ro'yxati (${list.length} ta):</b>\n\n`;
   list.forEach((c: any, i: number) => {
-    msg += `${i + 1}. *${c.title}*\n   Tashkilot: ${c.issuer}\n   Sana: ${c.date}\n\n`;
+    msg += `${i + 1}. <b>${c.title}</b>\n   Tashkilot: ${c.issuer}\n   Sana: ${c.date}\n\n`;
   });
 
   await ctx.editMessageText(msg, {
-    parse_mode: "Markdown",
+    parse_mode: "HTML",
     ...Markup.inlineKeyboard(buttons),
   });
 });
 
 bot.action("add_cert", async (ctx) => {
-  sessions[ctx.chat.id] = { step: "cert_title" };
+  if (ctx.chat) sessions[ctx.chat.id] = { step: "cert_title" };
   await ctx.reply("Sertifikat nomini kiriting (masalan: Web Development Certificate):");
 });
 
@@ -208,6 +217,9 @@ bot.action(/del_cert_(.+)/, async (ctx) => {
 
 // ── JOURNEY MENU ─────────────────────────────────────────────────────────────
 bot.action("menu_journey", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+  } catch (e) {}
   const content = readContent();
   const list = content?.journey || [];
 
@@ -217,13 +229,13 @@ bot.action("menu_journey", async (ctx) => {
   buttons.push([Markup.button.callback("➕ Yangi bosqich qo'shish", "add_journey")]);
   buttons.push([Markup.button.callback("⬅️ Bosh menyu", "menu_main")]);
 
-  let msg = `🧭 *Sayohat bosqichlari (${list.length} ta):*\n\n`;
+  let msg = `🧭 <b>Sayohat bosqichlari (${list.length} ta):</b>\n\n`;
   list.forEach((j: any) => {
-    msg += `• *${j.year}:* ${j.title}\n  ${j.description}\n\n`;
+    msg += `• <b>${j.year}:</b> ${j.title}\n  ${j.description}\n\n`;
   });
 
   await ctx.editMessageText(msg, {
-    parse_mode: "Markdown",
+    parse_mode: "HTML",
     ...Markup.inlineKeyboard(buttons),
   });
 });
