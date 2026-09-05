@@ -439,26 +439,65 @@ export default function Home() {
 
             {/* ── JOURNEY SECTION ──────────────────── */}
             <section id="journey" className="section-block" aria-label="Sayohat">
-              <SectionHeader label="Sayohat" />
+              <SectionHeader label="Sayohat & Estaliklar" />
               <ol className="group/list" style={{ listStyle: "none" }}>
-                {journey.map((item, i) => (
-                  <li key={i} style={{ marginBottom: "36px" }}>
-                    <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
+                {journey.map((item: any, i: number) => (
+                  <li key={i} style={{ marginBottom: "40px" }}>
+                    <div className="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
                       <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg" />
                       
+                      {/* Left: Date / Year */}
                       <div className="z-10 sm:col-span-2">
                         <p style={{ color: "#64748b", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", paddingTop: "2px" }}>
-                          {item.year}
+                          {item.date || item.year}
                         </p>
+                        {item.location && (
+                          <p style={{ color: "#475569", fontSize: "0.7rem", marginTop: "4px" }}>
+                            {item.location}
+                          </p>
+                        )}
                       </div>
                       
+                      {/* Right: Content */}
                       <div className="z-10 sm:col-span-6">
-                        <p style={{ color: "#e2e8f0", fontSize: "0.95rem", fontWeight: 500, marginBottom: "6px" }}>
+                        <p style={{ color: "#e2e8f0", fontSize: "1rem", fontWeight: 500, marginBottom: "6px" }}>
                           {item.title}
                         </p>
-                        <p style={{ color: "#94a3b8", fontSize: "0.875rem", lineHeight: "1.6" }}>
+                        <p style={{ color: "#94a3b8", fontSize: "0.875rem", lineHeight: "1.6", marginBottom: "12px" }}>
                           {item.description}
                         </p>
+
+                        {/* Media: Image or Video */}
+                        {item.media && (
+                          <div style={{ marginBottom: "12px" }}>
+                            {item.mediaType === "video" ? (
+                              <video
+                                src={item.media}
+                                controls
+                                className="w-full max-w-md rounded border border-slate-700/50 shadow-md"
+                              />
+                            ) : (
+                              <div className="relative aspect-video w-full max-w-md overflow-hidden rounded border border-slate-700/50 shadow-md">
+                                <Image
+                                  src={item.media}
+                                  alt={item.title}
+                                  fill
+                                  sizes="(max-width: 768px) 100vw, 400px"
+                                  className="object-cover"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Tags */}
+                        {item.tags && item.tags.length > 0 && (
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                            {item.tags.map((tag: string) => (
+                              <Tag key={tag} label={tag} />
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </li>

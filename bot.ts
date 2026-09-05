@@ -415,22 +415,31 @@ bot.on("text", async (ctx) => {
 
     // Add Journey Steps
     case "jour_year":
-      sessions[ctx.chat.id] = { step: "jour_title", temp: { year: text } };
-      await ctx.reply("Ushbu bosqich sarlavhasini kiriting (masalan: Kiberxavfsizlik kursini boshladim):");
+      sessions[ctx.chat.id] = { step: "jour_title", temp: { date: text, year: text } };
+      await ctx.reply("Ushbu bosqich / estalik sarlavhasini kiriting (masalan: Qarshi Milliy AI Hakatonida ishtirok):");
       break;
 
     case "jour_title":
       session.temp.title = text;
       sessions[ctx.chat.id] = { step: "jour_desc", temp: session.temp };
-      await ctx.reply("Batafsil tavsifini yozing:");
+      await ctx.reply("Ushbu voqea haqida batafsil tavsif yozing:");
       break;
 
     case "jour_desc":
       session.temp.description = text;
+      sessions[ctx.chat.id] = { step: "jour_media", temp: session.temp };
+      await ctx.reply("Estalik uchun rasm yoki video havolasini yuboring (masalan: https://... yoki «yo'q» deb yozing):");
+      break;
+
+    case "jour_media":
+      if (text.toLowerCase() !== "yo'q" && text.startsWith("http")) {
+        session.temp.media = text;
+        session.temp.mediaType = text.endsWith(".mp4") || text.includes("video") ? "video" : "image";
+      }
       content.journey.push(session.temp);
       saveContent(content);
       delete sessions[ctx.chat.id];
-      await ctx.reply(`🎉 Sayohat bosqichi qo'shildi!`, getMainMenu());
+      await ctx.reply(`🎉 Yangi estalik / sayohat bosqichi muvaffaqiyatli qo'shildi!`, getMainMenu());
       break;
 
     default:
