@@ -71,24 +71,10 @@
   ],
   "journey": [
     {
-      "year": "2024",
-      "title": "Frontend kursini boshladim",
-      "description": "11 oylik chuqurlashtirilgan frontend ta'limi. HTML, CSS, JavaScript, React va Next.js asoslarini puxta o'zlashtirish."
-    },
-    {
-      "year": "2024",
-      "title": "Birinchi yirik loyihalar & O'qituvchilik",
-      "description": "SavdoAI g'oyasi ustida ishlash va o'quv markazida yoshlarga HTML/CSS bo'yicha saboq berishni boshlash."
-    },
-    {
-      "year": "2025",
-      "title": "Hackathon & EduFund",
-      "description": "EduFund ta'lim moliyalashtirish loyihasi bilan hackathonda muvaffaqiyatli ishtirok etdim."
-    },
-    {
-      "year": "2026 — Hozir",
-      "title": "Milliy AI Hackathon & «Bir Joy» Davlat Tashabbusi",
-      "description": "Qarshi shahridagi National AI Hackathon ishtirokchisi hamda Oliy Ta'lim, Fan va Innovatsiyalar Vazirligining «35 000 tashabbus» platformasi sertifikati sohibi."
+      "date": "24.10.2026",
+      "year": "2026",
+      "title": "Omadim kelib birinchi marta Informatika olimpiadasida faxrli o'rin oldim",
+      "description": "Men birinchi marta Informatika olimpiadasida 6-o'rinni oldim va bu mening hayotimda IT-ga qiziqish uyg'otdi lekin men o'sha payti \"Shifokor\" bo'lmoqchi edim va kimyoga tayyorlanar edim."
     }
   ]
 }
